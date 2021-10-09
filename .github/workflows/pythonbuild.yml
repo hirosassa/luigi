@@ -21,6 +21,8 @@ jobs:
             tox-env: py38-core
           - python-version: 3.9
             tox-env: py39-core
+          - python-version: 3.10
+            tox-env: py310-core
 
     steps:
       - uses: actions/checkout@v2
@@ -49,7 +51,7 @@ jobs:
           TOXENV: ${{ matrix.tox-env }}
         run: tox
       - name: Codecov
-        env: 
+        env:
           COVERAGE_PROCESS_START: .coveragerc
         run: |
           pip install codecov
@@ -84,6 +86,8 @@ jobs:
             tox-env: py38-postgres
           - python-version: 3.9
             tox-env: py39-postgres
+          - python-version: 3.10
+            tox-env: py310-postgres
 
     steps:
       - uses: actions/checkout@v2
@@ -109,7 +113,7 @@ jobs:
           TOXENV: ${{ matrix.tox-env }}
         run: tox
       - name: Codecov
-        env: 
+        env:
           COVERAGE_PROCESS_START: .coveragerc
         run: |
           pip install codecov
@@ -133,6 +137,8 @@ jobs:
             tox-env: py38-aws
           - python-version: 3.9
             tox-env: py39-aws
+          - python-version: 3.10
+            tox-env: py310-aws
 
           - python-version: 3.6
             tox-env: py36-unixsocket
@@ -146,6 +152,9 @@ jobs:
           - python-version: 3.9
             tox-env: py39-unixsocket
             OVERRIDE_SKIP_CI_TESTS: True
+          - python-version: 3.10
+            tox-env: py310-unixsocket
+            OVERRIDE_SKIP_CI_TESTS: True
 
           - python-version: 3.6
             tox-env: py36-apache
@@ -155,7 +164,9 @@ jobs:
             tox-env: py38-apache
           - python-version: 3.9
             tox-env: py39-apache
-            
+          - python-version: 3.10.0
+            tox-env: py310-apache
+
           - python-version: 3.6
             tox-env: py36-azureblob
           - python-version: 3.7
@@ -164,6 +175,8 @@ jobs:
             tox-env: py38-azureblob
           - python-version: 3.9
             tox-env: py39-azureblob
+          - python-version: 3.10
+            tox-env: py310-azureblob
 
 
           - python-version: 3.9
@@ -194,7 +207,7 @@ jobs:
         run: tox
       - name: Codecov
         if: ${{ matrix.tox-env != 'flake8' && matrix.tox-env != 'docs' }}
-        env: 
+        env:
           COVERAGE_PROCESS_START: .coveragerc
         run: |
           pip install codecov
