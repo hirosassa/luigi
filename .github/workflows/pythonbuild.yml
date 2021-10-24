@@ -21,8 +21,8 @@ jobs:
             tox-env: py38-core
           - python-version: "3.9"
             tox-env: py39-core
-          # - python-version: "3.10"
-          #   tox-env: py310-core
+          - python-version: "3.10"
+            tox-env: py310-core
 
     steps:
       - uses: actions/checkout@v2
