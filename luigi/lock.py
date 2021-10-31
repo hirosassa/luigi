@@ -63,7 +63,8 @@ def getpcmd(pid):
         # https://github.com/spotify/luigi/pull/1876
         try:
             with open('/proc/{0}/cmdline'.format(pid), 'r') as fh:
-                print(f"cmdline: {fh.read().replace('\0', ' ').rstrip()}")
+                s = fh.read().replace('\0', ' ').rstrip()
+                print(f"cmdline: {s}")
                 return fh.read().replace('\0', ' ').rstrip()
         except IOError:
             # the system may not allow reading the command line
