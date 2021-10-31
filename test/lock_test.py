@@ -37,8 +37,6 @@ class TestCmd(unittest.TestCase):
             command = ["sleep", "1"]
 
         external_process = subprocess.Popen(command)
-        print()
-        print(f"debug {external_process.pid}")
         result = luigi.lock.getpcmd(external_process.pid)
         print(f"debug {result}")
 
