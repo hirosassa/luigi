@@ -34,7 +34,7 @@ class TestCmd(unittest.TestCase):
         if os.name == 'nt':
             command = ["ping", "1.1.1.1", "-w", "1000"]
         else:
-            command = ["sleep", "10"]
+            command = ["sleep", "1d"]
 
         external_process = subprocess.Popen(command)
         result = luigi.lock.getpcmd(external_process.pid)
@@ -43,7 +43,7 @@ class TestCmd(unittest.TestCase):
         # self.assertTrue(
         #     result.strip() in ["sleep 1", '[sleep]', 'ping 1.1.1.1 -w 1000']
         # )
-        self.assertEqual(result, "sleep 10")
+        self.assertEqual(result, "sleep 1d")
         external_process.kill()
 
 
