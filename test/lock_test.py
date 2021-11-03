@@ -40,10 +40,10 @@ class TestCmd(unittest.TestCase):
         result = luigi.lock.getpcmd(external_process.pid)
         print(f"debug {result}")
 
-        self.assertTrue(
-            result.strip() in ["sleep 1", '[sleep]', 'ping 1.1.1.1 -w 1000']
-        )
-        # self.assertEqual(result, "sleep 1")
+        # self.assertTrue(
+        #     result.strip() in ["sleep 1", '[sleep]', 'ping 1.1.1.1 -w 1000']
+        # )
+        self.assertEqual(result, "sleep 1")
         external_process.kill()
 
 
