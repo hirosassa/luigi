@@ -34,16 +34,19 @@ class TestCmd(unittest.TestCase):
         if os.name == 'nt':
             command = ["ping", "1.1.1.1", "-w", "1000"]
         else:
-            command = ["sleep", "1d"]
+            command = ["sleep", "1"]
 
         external_process = subprocess.Popen(command)
+        with open("/proc/{external_process.pid}/cmdline", 'r') as fh:
+            s = fh.read().replace('\0', ' ').rstrip()
+            print("c: {s}")
         result = luigi.lock.getpcmd(external_process.pid)
         print(f"debug {result}")
-        external_process.wait()
+
         # self.assertTrue(
         #     result.strip() in ["sleep 1", '[sleep]', 'ping 1.1.1.1 -w 1000']
         # )
-        self.assertEqual(result, "sleep 1d")
+        self.assertEqual(result, "sleep 1")
         external_process.kill()
 
 
