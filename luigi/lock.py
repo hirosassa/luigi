@@ -63,8 +63,9 @@ def getpcmd(pid):
         # https://github.com/spotify/luigi/pull/1876
         try:
             with open('/proc/{0}/cmdline'.format(pid), 'r') as fh:
+                p = fh.read().rstrip()
                 s = fh.read().replace('\0', ' ').rstrip()
-                print(f"fh: {fh.read()}")
+                print(f"fh: {p}")
                 print(f"cmdline: {s}")
                 return fh.read().replace('\0', ' ').rstrip()
         except IOError:
