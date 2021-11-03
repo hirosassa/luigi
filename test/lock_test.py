@@ -39,7 +39,7 @@ class TestCmd(unittest.TestCase):
         external_process = subprocess.Popen(command)
         with open("/proc/{external_process.pid}/cmdline", 'r') as fh:
             s = fh.read().replace('\0', ' ').rstrip()
-            print("c: {s}")
+            print(f"c: {s}")
         result = luigi.lock.getpcmd(external_process.pid)
         print(f"debug {result}")
 
