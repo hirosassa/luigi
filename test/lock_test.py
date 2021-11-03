@@ -39,7 +39,7 @@ class TestCmd(unittest.TestCase):
         external_process = subprocess.Popen(command)
         result = luigi.lock.getpcmd(external_process.pid)
         print(f"debug {result}")
-
+        external_process.wait()
         # self.assertTrue(
         #     result.strip() in ["sleep 1", '[sleep]', 'ping 1.1.1.1 -w 1000']
         # )
