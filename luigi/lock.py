@@ -25,7 +25,7 @@ import hashlib
 import os
 import sys
 from subprocess import Popen, PIPE
-from tenacity import retry, retry_if_result, stop_after_attempt, wait_exponential
+from tenacity import retry, retry_if_result, stop_after_attempt, wait_exponential, RetryError
 
 
 def getpcmd(pid):
@@ -64,6 +64,8 @@ def getpcmd(pid):
         # https://github.com/spotify/luigi/pull/1876
         try:
             return _proc(pid)
+        except RetryError:
+            pass
         except IOError:
             # the system may not allow reading the command line
             # of a process owned by another user
