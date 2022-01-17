@@ -25,6 +25,7 @@ import hashlib
 import os
 import sys
 from subprocess import Popen, PIPE
+from tenacity import retry, retry_if_exception, stop_after_attempt, wait_exponential
 
 
 def getpcmd(pid):
@@ -62,15 +63,7 @@ def getpcmd(pid):
         # worked. See the pull request at
         # https://github.com/spotify/luigi/pull/1876
         try:
-            def proc(pid):
-                with open('/proc/{0}/cmdline'.format(pid), 'r') as fh:
-                    return fh.read().replace('\0', ' ').rstrip()
-            s = ""
-            for i in range(3):
-                s = proc(pid)
-                if s != "":
-                    return s
-            return s
+            return _proc(pid)
         except IOError:
             # the system may not allow reading the command line
             # of a process owned by another user
@@ -78,6 +71,16 @@ def getpcmd(pid):
 
     # Fallback instead of None, for e.g. Cygwin where -o is an "unknown option" for the ps command:
     return '[PROCESS_WITH_PID={}]'.format(pid)
+
+
+def _is_empty(s):
+    return s == ""
+
+
+@retry(retry=retry_if_exception(_is_empty), stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=0.1, max=2))
+def _proc(pid):
+    with open('/proc/{0}/cmdline'.format(pid), 'r') as fh:
+        return fh.read().replace('\0', ' ').rstrip()
 
 
 def get_info(pid_dir, my_pid=None):
