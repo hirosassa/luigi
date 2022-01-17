@@ -25,7 +25,7 @@ import hashlib
 import os
 import sys
 from subprocess import Popen, PIPE
-from tenacity import retry, retry_if_exception, stop_after_attempt, wait_exponential
+from tenacity import retry, retry_if_result, stop_after_attempt, wait_exponential
 
 
 def getpcmd(pid):
@@ -77,7 +77,7 @@ def _is_empty(s):
     return s == ""
 
 
-@retry(retry=retry_if_exception(_is_empty), stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=0.1, max=2))
+@retry(retry=retry_if_result(_is_empty), stop=stop_after_attempt(5), wait=wait_exponential(multiplier=1, min=0.2, max=5))
 def _proc(pid):
     with open('/proc/{0}/cmdline'.format(pid), 'r') as fh:
         return fh.read().replace('\0', ' ').rstrip()
