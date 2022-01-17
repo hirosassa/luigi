@@ -62,8 +62,15 @@ def getpcmd(pid):
         # worked. See the pull request at
         # https://github.com/spotify/luigi/pull/1876
         try:
-            with open('/proc/{0}/cmdline'.format(pid), 'r') as fh:
-                return fh.read().replace('\0', ' ').rstrip()
+            def proc(pid):
+                with open('/proc/{0}/cmdline'.format(pid), 'r') as fh:
+                    return fh.read().replace('\0', ' ').rstrip()
+            s = ""
+            for i in range(3):
+                s = proc(pid)
+                if s != "":
+                    return s
+            return s
         except IOError:
             # the system may not allow reading the command line
             # of a process owned by another user
