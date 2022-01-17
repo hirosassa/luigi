@@ -38,15 +38,10 @@ class TestCmd(unittest.TestCase):
 
         external_process = subprocess.Popen(command)
         result = luigi.lock.getpcmd(external_process.pid)
-        with open(f"/proc/{external_process.pid}/cmdline", 'r') as fh:
-            s = fh.read().replace('\0', ' ').rstrip()
-            print(f"c: {s}")
-        print(f"debug {result}")
 
-        # self.assertTrue(
-        #     result.strip() in ["sleep 1", '[sleep]', 'ping 1.1.1.1 -w 1000']
-        # )
-        self.assertEqual(result, "sleep 1")
+        self.assertTrue(
+            result.strip() in ["sleep 1", '[sleep]', 'ping 1.1.1.1 -w 1000']
+        )
         external_process.kill()
 
 
