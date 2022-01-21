@@ -79,7 +79,7 @@ def _is_empty(s):
     return s == ""
 
 
-@retry(retry=retry_if_result(_is_empty), stop=stop_after_attempt(5), wait=wait_exponential(multiplier=1, min=0.2, max=5))
+@retry(retry=retry_if_result(_is_empty), wait=wait_exponential(multiplier=1, min=1, max=10), stop=stop_after_attempt(5))
 def _proc(pid):
     with open('/proc/{0}/cmdline'.format(pid), 'r') as fh:
         return fh.read().replace('\0', ' ').rstrip()
