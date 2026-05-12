@@ -20,6 +20,8 @@ It is a central concept of Luigi and represents the state of the workflow.
 See :doc:`/tasks` for an overview.
 """
 
+from __future__ import annotations
+
 import copy
 import functools
 import hashlib
@@ -30,7 +32,10 @@ import traceback
 import warnings
 from collections import OrderedDict, deque
 from contextlib import contextmanager
-from typing import Any, Dict, Optional
+from typing import TYPE_CHECKING, Any, Dict, Optional
+
+if TYPE_CHECKING:
+    from luigi.target import Target
 
 from typing_extensions import dataclass_transform
 
@@ -613,7 +618,7 @@ class Task(metaclass=Register):
         """
         raise BulkCompleteNotImplementedError()
 
-    def output(self):
+    def output(self) -> "Target" | list["Target"] | dict[str, "Target"]:
         """
         The output that this Task produces.
 
@@ -631,7 +636,7 @@ class Task(metaclass=Register):
         """
         return []  # default impl
 
-    def requires(self):
+    def requires(self) -> "Task" | list["Task"] | dict[str, "Task"]:
         """
         The Tasks that this Task depends on.
 
@@ -665,7 +670,7 @@ class Task(metaclass=Register):
         """
         return self.resources  # default impl
 
-    def input(self):
+    def input(self) -> "Target" | list["Target"] | dict[str, "Target"]:
         """
         Returns the outputs of the Tasks returned by :py:meth:`requires`
 
@@ -676,7 +681,7 @@ class Task(metaclass=Register):
         """
         return getpaths(self.requires())
 
-    def deps(self):
+    def deps(self) -> list["Task"]:
         """
         Internal method used by the scheduler.
 
@@ -960,7 +965,7 @@ def getpaths(struct):
             raise Exception("Cannot map %s to Task/dict/list" % str(struct))
 
 
-def flatten(struct):
+def flatten(struct: Any) -> list[Any]:
     """
     Creates a flat list of all items in structured output (dicts, lists, items):
 
