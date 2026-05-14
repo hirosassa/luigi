@@ -32,6 +32,7 @@ try:
     import psycopg2
     import psycopg2.errorcodes
 except ImportError:
+    # Dependency check for psycopg2 is handled by contrib/postgres module
     pass
 
 
