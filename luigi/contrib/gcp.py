@@ -25,7 +25,9 @@ def get_authenticate_kwargs(oauth_credentials=None, http_=None):
     Used by `gcs.GCSClient` and `bigquery.BigQueryClient` to initiate the API Client
     """
     if not _gcp_enabled:
-        raise ImportError("google-auth and httplib2 are required for GCP functionality. Install them with: pip install google-auth httplib2")
+        raise ImportError(
+            "google-auth and google-auth-httplib2 are required for GCP functionality. Install them with: pip install google-auth google-auth-httplib2"
+        )
     if oauth_credentials:
         authenticate_kwargs = {"credentials": oauth_credentials}
     elif http_:

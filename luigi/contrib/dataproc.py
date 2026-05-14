@@ -42,7 +42,10 @@ class _DataprocBaseTask(luigi.Task):
 
     def __init__(self, *args, **kwargs):
         if not _dataproc_enabled:
-            raise ImportError("google-api-python-client is required for Dataproc functionality. Install it with: pip install google-api-python-client")
+            raise ImportError(
+                "google-api-python-client and google-auth are required for Dataproc functionality."
+                " Install them with: pip install google-api-python-client google-auth"
+            )
         super().__init__(*args, **kwargs)
 
 
