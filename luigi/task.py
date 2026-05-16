@@ -618,7 +618,7 @@ class Task(metaclass=Register):
         """
         raise BulkCompleteNotImplementedError()
 
-    def output(self) -> "Target" | list["Target"] | dict[str, "Target"]:
+    def output(self) -> "Target" | list["Target"] | tuple["Target", ...] | dict[str, "Target"]:
         """
         The output that this Task produces.
 
@@ -636,7 +636,7 @@ class Task(metaclass=Register):
         """
         return []  # default impl
 
-    def requires(self) -> "Task" | list["Task"] | dict[str, "Task"]:
+    def requires(self) -> "Task" | list["Task"] | tuple["Task", ...] | dict[str, "Task"]:
         """
         The Tasks that this Task depends on.
 
@@ -670,7 +670,7 @@ class Task(metaclass=Register):
         """
         return self.resources  # default impl
 
-    def input(self) -> "Target" | list["Target"] | dict[str, "Target"]:
+    def input(self) -> "Target" | list["Target"] | tuple["Target", ...] | dict[str, "Target"]:
         """
         Returns the outputs of the Tasks returned by :py:meth:`requires`
 
